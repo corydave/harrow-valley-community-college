@@ -1,0 +1,372 @@
+/* ==================================================================
+   HARROW VALLEY COMMUNITY COLLEGE - shared stylesheet
+   ==================================================================
+   One stylesheet for every page, so the branding stays the same
+   everywhere. Sections:
+     1. Brand colors and sizes (change the look here)
+     2. Basics
+     3. Top bar, header, logo, and main navigation
+     4. Page title area and breadcrumbs
+     5. Content: text, tables, notices, cards, photos
+     6. Footer
+     7. Small screens and printing
+
+   ACCESSIBILITY NOTES
+   - Every text color below passes WCAG AA contrast (4.5:1 or better)
+     on the background it is used on.
+   - The one exception is the GOLD in the logo. Logos are exempt from
+     the contrast rule, and gold is never used for words people
+     need to read.
+   - Links are always underlined, so they never rely on color alone.
+   - Keyboard focus gets a thick, high-contrast outline everywhere.
+   ================================================================== */
+
+/* ------------------------------------------------------------------
+   1. BRAND COLORS AND SIZES
+   ------------------------------------------------------------------ */
+:root {
+  --green-900: #11302a;   /* darkest green: top bar and footer      */
+  --green-700: #1d5240;   /* brand green: header nav, buttons       */
+  --green-100: #e3efe8;   /* pale green: soft panels                */
+  --gold:      #f2b632;   /* logo gold - decoration only, never text */
+  --gold-100:  #fbf0d2;   /* pale gold: notices                     */
+  --cream:     #faf7f0;   /* page background                        */
+  --white:     #ffffff;
+  --ink:       #1c2320;   /* body text (about 15:1 on cream)        */
+  --ink-soft:  #4a5550;   /* secondary text (about 7:1 on cream)    */
+  --line:      #d6cfbf;   /* borders                                */
+  --link:      #1d5240;   /* links (about 8:1 on cream)             */
+  --focus:     #b3261e;   /* focus outline: red, easy to spot       */
+
+  --radius: 10px;
+  --wrap: 1120px;         /* widest the content gets                */
+}
+
+/* ------------------------------------------------------------------
+   2. BASICS
+   ------------------------------------------------------------------ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { font-size: 100%; }   /* respects the visitor's own text size setting */
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: "Atkinson Hyperlegible", Verdana, "Segoe UI", sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+  line-height: 1.2;
+  margin: 1.6em 0 0.5em;
+  color: var(--green-900);
+}
+h1 { font-size: clamp(2rem, 1.4rem + 2.4vw, 2.9rem); margin-top: 0; }
+h2 { font-size: clamp(1.45rem, 1.2rem + 1vw, 1.85rem); }
+h3 { font-size: 1.25rem; }
+
+p, ul, ol { margin: 0 0 1em; }
+p, li { max-width: 72ch; }   /* shorter lines are easier to read */
+/* ...but list items that are grid cards should fill their space */
+.quick-links li, .cards li { max-width: none; }
+
+a { color: var(--link); text-decoration-thickness: 0.08em; text-underline-offset: 0.18em; }
+a:hover { text-decoration-thickness: 0.16em; }
+
+/* One thick focus ring for keyboard users, on everything */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+.wrap { width: min(var(--wrap), 100% - 40px); margin-inline: auto; }
+
+/* Text only screen readers hear */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* "Skip to main content" - hidden until a keyboard user tabs to it */
+.skip-link {
+  position: absolute; left: 12px; top: -100px; z-index: 100;
+  background: var(--white); color: var(--green-900);
+  padding: 10px 16px; border-radius: var(--radius);
+  font-weight: 700;
+}
+.skip-link:focus { top: 12px; }
+
+/* ------------------------------------------------------------------
+   3. TOP BAR, HEADER, LOGO, AND MAIN NAVIGATION
+   ------------------------------------------------------------------ */
+.topbar {
+  background: var(--green-900);
+  color: var(--white);
+  font-size: 0.95rem;
+}
+.topbar .wrap {
+  display: flex; flex-wrap: wrap; justify-content: space-between;
+  align-items: center; gap: 6px 20px;
+  padding: 8px 0;
+}
+.topbar ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.topbar a { color: var(--white); }
+.topbar :focus-visible { outline-color: var(--gold); }
+
+.site-header { background: var(--white); border-bottom: 1px solid var(--line); }
+.site-header .wrap {
+  display: flex; flex-wrap: wrap; align-items: center;
+  justify-content: space-between; gap: 14px 24px;
+  padding: 16px 0;
+}
+
+/* The logo: the hawk mark plus the name, as one link home */
+.logo {
+  display: inline-flex; align-items: center; gap: 12px;
+  color: var(--green-900); text-decoration: none;
+}
+.logo svg { width: 58px; height: 58px; flex: none; }
+.logo-words { display: flex; flex-direction: column; line-height: 1.05; }
+.logo-name {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-weight: 700; font-size: 1.45rem; letter-spacing: 0.01em;
+}
+.logo-sub {
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--ink-soft);
+}
+
+/* The green "Visitor Parking" shortcut in the header - on every
+   page, so parking is always one click away */
+.header-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--green-700); color: var(--white);
+  padding: 10px 18px; border-radius: 999px;
+  font-weight: 700; text-decoration: none;
+  min-height: 44px;   /* big enough to tap */
+}
+.header-cta:hover { background: var(--green-900); text-decoration: underline; }
+.header-cta svg { width: 1.2em; height: 1.2em; }
+
+/* Main navigation: a plain list of links that wraps on small
+   screens. No JavaScript, no hidden menu - nothing to break. */
+.main-nav { background: var(--green-700); }
+.main-nav ul {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap;
+}
+.main-nav a {
+  display: block;
+  padding: 12px 16px;
+  color: var(--white);
+  font-weight: 700;
+  text-decoration: none;
+  min-height: 44px;
+}
+.main-nav a:hover { background: var(--green-900); text-decoration: underline; }
+/* The page you're on: marked for screen readers with aria-current,
+   and for everyone else with a gold bar (plus the shape change) */
+.main-nav a[aria-current="page"] { background: var(--green-900); box-shadow: inset 0 -4px 0 var(--gold); }
+.main-nav :focus-visible { outline-color: var(--gold); outline-offset: -3px; }
+
+/* ------------------------------------------------------------------
+   4. PAGE TITLE AREA AND BREADCRUMBS
+   ------------------------------------------------------------------ */
+.page-head { background: var(--green-100); border-bottom: 1px solid var(--line); padding: 22px 0 28px; }
+.page-head .lede { font-size: 1.2rem; color: var(--ink-soft); margin: 0; }
+
+.breadcrumbs ol {
+  list-style: none; margin: 0 0 14px; padding: 0;
+  display: flex; flex-wrap: wrap; gap: 4px; font-size: 0.95rem;
+}
+.breadcrumbs li:not(:last-child)::after { content: "/"; margin-left: 6px; color: var(--ink-soft); }
+
+main { display: block; }
+.main-body { padding: 32px 0 56px; }
+
+/* Long email addresses and links wrap instead of pushing the page
+   sideways on a phone */
+dd, td, p, li, .sidebar, .notice, .card-body { overflow-wrap: anywhere; }
+main:focus { outline: none; }
+
+/* Two columns on wide screens: content and a sidebar */
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 40px; align-items: start; }
+.layout.single { grid-template-columns: minmax(0, 1fr); }
+
+.sidebar {
+  background: var(--white); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 20px;
+}
+.sidebar h2 { font-size: 1.15rem; margin-top: 0; }
+.sidebar h2:not(:first-child) { margin-top: 1.4em; }
+.sidebar ul { padding-left: 1.1em; }
+
+/* ------------------------------------------------------------------
+   5. CONTENT
+   ------------------------------------------------------------------ */
+
+/* An "official document" box - how the college shows policies,
+   procedures, and posted documents */
+.doc {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-top: 6px solid var(--green-700);
+  border-radius: var(--radius);
+  padding: 26px 28px;
+}
+.doc > :first-child { margin-top: 0; }
+.doc-meta { color: var(--ink-soft); font-size: 0.95rem; }
+
+/* Tables: clear borders, header row shaded, scrolls sideways on
+   a phone instead of squashing */
+.table-scroll { overflow-x: auto; margin: 0 0 1.2em; }
+table { border-collapse: collapse; width: 100%; background: var(--white); }
+caption { text-align: left; font-weight: 700; padding: 0 0 8px; }
+th, td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+th { background: var(--green-100); }
+td.blank { height: 3em; }   /* empty boxes on printed forms */
+
+/* Notices */
+.notice {
+  border-left: 6px solid var(--green-700);
+  background: var(--green-100);
+  padding: 14px 18px; border-radius: var(--radius);
+  margin: 0 0 1.4em;
+}
+.notice.gold { border-left-color: #8a6100; background: var(--gold-100); }
+.notice > :last-child { margin-bottom: 0; }
+
+/* Buttons (they are links styled as buttons) */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 44px; padding: 10px 18px;
+  border-radius: 999px; border: 2px solid var(--green-700);
+  background: var(--green-700); color: var(--white);
+  font-weight: 700; text-decoration: none;
+}
+.btn:hover { background: var(--green-900); border-color: var(--green-900); text-decoration: underline; }
+.btn.secondary { background: var(--white); color: var(--green-700); }
+.btn.secondary:hover { background: var(--green-100); }
+.btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 1.4em; }
+
+/* Home page hero: a photo with the welcome message beside it */
+.hero { background: var(--green-900); color: var(--white); }
+/* minmax(0, ...) lets the columns shrink below the photo's natural width */
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 0; align-items: stretch; }
+.hero-text { padding: 44px 40px 44px 0; }
+.hero-text h1 { color: var(--white); }
+.hero-text p { font-size: 1.2rem; }
+.hero-text a { color: var(--white); }
+.hero-photo { position: relative; min-height: 320px; background: var(--green-700); }
+.hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Quick-link cards. The first one (Visitor Parking) is bigger. */
+.quick-links {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: 16px;
+}
+.quick-links a {
+  display: flex; flex-direction: column; gap: 6px; height: 100%;
+  background: var(--white); border: 2px solid var(--line);
+  border-radius: var(--radius); padding: 18px 20px;
+  text-decoration: none; color: var(--ink);
+}
+.quick-links a:hover { border-color: var(--green-700); }
+.quick-links strong { font-size: 1.15rem; color: var(--green-700); text-decoration: underline; text-underline-offset: 0.18em; }
+.quick-links span { color: var(--ink-soft); }
+.quick-links .featured { grid-column: 1 / -1; }
+.quick-links .featured a {
+  flex-direction: row; align-items: center; gap: 18px;
+  background: var(--green-700); border-color: var(--green-700); color: var(--white);
+}
+.quick-links .featured strong { color: var(--white); font-size: 1.5rem; }
+.quick-links .featured span { color: var(--white); }
+.quick-links .featured svg { width: 56px; height: 56px; flex: none; }
+
+/* News and event cards */
+.cards {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 20px;
+}
+.card {
+  background: var(--white); border: 1px solid var(--line);
+  border-radius: var(--radius); overflow: hidden; height: 100%;
+  display: flex; flex-direction: column;
+}
+.card img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--green-100); }
+.card-body { padding: 16px 20px 20px; }
+.card-body h3 { margin-top: 0; font-size: 1.2rem; }
+.card-kicker { font-size: 0.9rem; font-weight: 700; color: var(--ink-soft); margin-bottom: 4px; }
+
+/* Photos with captions inside articles */
+figure { margin: 0 0 1.4em; }
+figure img { border-radius: var(--radius); background: var(--green-100); width: 100%;
+             max-height: 480px; object-fit: cover; }   /* keeps big photos from taking over the page */
+figcaption { font-size: 0.92rem; color: var(--ink-soft); margin-top: 6px; }
+
+/* Definition-style contact lists */
+dl.facts { display: grid; grid-template-columns: max-content 1fr; gap: 6px 18px; margin: 0 0 1.2em; }
+dl.facts dt { font-weight: 700; }
+dl.facts dd { margin: 0; }
+
+/* Lists of policies and forms */
+.link-list { list-style: none; padding: 0; margin: 0 0 1.4em; }
+.link-list li { border-bottom: 1px solid var(--line); padding: 12px 0; max-width: none; }
+.link-list li:first-child { border-top: 1px solid var(--line); }
+.link-list .num { display: inline-block; min-width: 7.5em; font-weight: 700; color: var(--ink-soft); }
+.link-list small { display: block; color: var(--ink-soft); font-size: 0.95rem; }
+
+/* Campus map */
+.map-figure svg { width: 100%; height: auto; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); }
+
+/* ------------------------------------------------------------------
+   6. FOOTER
+   ------------------------------------------------------------------ */
+.site-footer { background: var(--green-900); color: var(--white); padding: 40px 0 28px; font-size: 0.97rem; }
+.site-footer a { color: var(--white); }
+.site-footer :focus-visible { outline-color: var(--gold); }
+.footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 24px; }
+.site-footer h2 { color: var(--white); font-size: 1.1rem; margin: 0 0 10px; }
+.site-footer ul { list-style: none; padding: 0; margin: 0; }
+.site-footer li { margin-bottom: 6px; }
+.fiction-note {
+  margin-top: 28px; padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+/* ------------------------------------------------------------------
+   7. SMALL SCREENS AND PRINTING
+   ------------------------------------------------------------------ */
+@media (max-width: 860px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); width: 100%; }
+  .hero-text { padding: 32px 20px; }
+  .hero-photo { min-height: 220px; order: -1; }
+  .doc { padding: 20px; }
+  .quick-links .featured a { flex-direction: column; align-items: flex-start; }
+  /* Contact lists stack: label on one line, answer under it */
+  dl.facts { grid-template-columns: 1fr; gap: 0; }
+  dl.facts dd { margin-bottom: 10px; }
+}
+
+/* Respect "reduce motion" settings (there's no animation now, but
+   this keeps any future additions polite) */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+@media print {
+  .topbar, .main-nav, .header-cta, .site-footer, .sidebar, .skip-link, .breadcrumbs { display: none; }
+  body { background: #fff; }
+  .doc { border: 0; padding: 0; }
+  a { color: #000; }
+}
